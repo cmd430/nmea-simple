@@ -19,8 +19,8 @@ import { decodeSentence as decodeVHW, type VHWPacket } from "./codecs/VHW";
 import { decodeSentence as decodeVTG, encodePacket as encodeVTG, type VTGPacket } from "./codecs/VTG";
 import { decodeSentence as decodeZDA, type ZDAPacket } from "./codecs/ZDA";
 
-import { parseStub, PacketStub } from "./codecs/PacketStub";
-import { decodeSentence as decodeUnknown, UnknownPacket } from "./codecs/UnknownPacket";
+import { parseStub, type PacketStub } from "./codecs/PacketStub";
+import { decodeSentence as decodeUnknown, type UnknownPacket } from "./codecs/UnknownPacket";
 import { validNmeaChecksum } from "./helpers";
 
 
@@ -129,7 +129,7 @@ export function parseGenericPacket<PacketType>(sentence: string, factory: Packet
         chxOk = false;
     }
 
-    const fields = sentence.split("*")[0].split(",");
+    const fields = sentence?.split("*")?.[0]?.split(",");
     const stub = parseStub(fields[0], chxOk);
     const packet = factory.assemble(stub, fields);
 
