@@ -17,7 +17,6 @@ export function initStubFields<IdType>(stub: PacketStub, id: IdType, sentenceNam
 }
 
 export function parseStub(field0: string, chxOk: boolean): PacketStub {
-
   let talkerId: string
   let sentenceId: string
 
@@ -25,7 +24,7 @@ export function parseStub(field0: string, chxOk: boolean): PacketStub {
     talkerId = 'P' // Proprietary
     sentenceId = field0.slice(2)
   } else {
-    talkerId = field0.slice(1, 2)
+    talkerId = field0.slice(1, 3)
     sentenceId = field0.slice(3)
   }
 

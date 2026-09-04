@@ -13,6 +13,7 @@ import { decodeSentence as decodeHDG, type HDGPacket } from './codecs/HDG'
 import { decodeSentence as decodeHDM, type HDMPacket } from './codecs/HDM'
 import { decodeSentence as decodeHDT, type HDTPacket } from './codecs/HDT'
 import { decodeSentence as decodeMTK, type MTKPacket } from './codecs/MTK'
+import { decodeSentence as decodeMTW, type MTWPacket } from './codecs/MTW'
 import { decodeSentence as decodeMWV, type MWVPacket } from './codecs/MWV'
 import { decodeSentence as decodeRDID, type RDIDPacket } from './codecs/RDID'
 import { decodeSentence as decodeRMC, type RMCPacket } from './codecs/RMC'
@@ -25,8 +26,8 @@ import { decodeSentence as decodeUnknown, type UnknownPacket } from './codecs/Un
 import { validNmeaChecksum } from './helpers'
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | DPTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket | ZDAPacket
-export type { APBPacket, BWCPacket, DBTPacket, DPTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket }
+export type Packet = APBPacket | BWCPacket | DBTPacket | DPTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MTWPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket | ZDAPacket
+export type { APBPacket, BWCPacket, DBTPacket, DPTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MTWPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket }
 
 export function assertPacketIs<IdType extends string, PacketType extends PacketStub = Packet>(packetId: IdType, packet: PacketType): asserts packet is (PacketType & { sentenceId: IdType }) {
   if (packet.sentenceId !== packetId) {
@@ -53,6 +54,7 @@ const decoders: { [sentenceId: string]: Decoder } = {
   HDM: decodeHDM,
   HDT: decodeHDT,
   MTK: decodeMTK,
+  MTW: decodeMTW,
   MWV: decodeMWV,
   RDID: decodeRDID,
   RMC: decodeRMC,
