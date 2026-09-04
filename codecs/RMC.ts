@@ -11,8 +11,8 @@
  * Field Number:
  * 1. UTC Time
  * 2. Status
- *    A = Valid
- *    V = Navigation receiver warning
+ *  A = Valid
+ *  V = Navigation receiver warning
  * 3. Latitude
  * 4. N or S
  * 5. Longitude
@@ -26,38 +26,38 @@
  * 13. Checksum
  */
 
-import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe, parseLatitude, parseLongitude, parseTime } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "RMC" = "RMC";
-export const sentenceName = "Recommended minimum navigation information";
+export const sentenceId: 'RMC' = 'RMC'
+export const sentenceName = 'Recommended minimum navigation information'
 
 
 export interface RMCPacket extends PacketStub<typeof sentenceId> {
-    datetime: Date;
-    status: "valid" | "warning";
-    latitude: number;
-    longitude: number;
-    speedKnots: number;
-    trackTrue: number;
-    variation: number;
-    variationPole: "" | "E" | "W";
-    faaMode?: string;
+  datetime: Date
+  status: 'valid' | 'warning'
+  latitude: number
+  longitude: number
+  speedKnots: number
+  trackTrue: number
+  variation: number
+  variationPole: '' | 'E' | 'W'
+  faaMode?: string
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): RMCPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        datetime: parseTime(fields[1], fields[9], true),
-        status: fields[2] === "A" ? "valid" : "warning",
-        latitude: parseLatitude(fields[3], fields[4]),
-        longitude: parseLongitude(fields[5], fields[6]),
-        speedKnots: parseFloatSafe(fields[7]),
-        trackTrue: parseFloatSafe(fields[8]),
-        variation: parseFloatSafe(fields[10]),
-        variationPole: fields[11] === "E" ? "E" : fields[11] === "W" ? "W" : "",
-        faaMode: fields[12]
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    datetime: parseTime(fields[1]!, fields[9], true),
+    status: fields[2] === 'A' ? 'valid' : 'warning',
+    latitude: parseLatitude(fields[3]!, fields[4]!),
+    longitude: parseLongitude(fields[5]!, fields[6]!),
+    speedKnots: parseFloatSafe(fields[7]),
+    trackTrue: parseFloatSafe(fields[8]),
+    variation: parseFloatSafe(fields[10]),
+    variationPole: fields[11] === 'E' ? 'E' : fields[11] === 'W' ? 'W' : '',
+    faaMode: fields[12]
+  }
 }

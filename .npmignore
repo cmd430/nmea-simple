@@ -1,4 +1,0 @@
-# .gitignore without /dist/
-/node_modules/
-/typings/
-*.log

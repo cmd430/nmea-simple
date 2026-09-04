@@ -10,12 +10,12 @@
  * Field Number:
  *
  * 1. Selection of 2D or 3D fix
- *    A - Automatic
- *    M - Manual, forced to operate in 2D or 3D
+ *  A - Automatic
+ *  M - Manual, forced to operate in 2D or 3D
  * 2. 3D fix
- *    1 - no fix
- *    2 - 2D fix
- *    3 - 3D fix
+ *  1 - no fix
+ *  2 - 2D fix
+ *  3 - 3D fix
  * 3. PRN of satellite used for fix (may be blank)
  * ...
  * 14. PRN of satellite used for fix (may be blank)
@@ -25,44 +25,44 @@
  * 18. Checksum
  */
 
-import { parseFloatSafe, parseIntSafe } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe, parseIntSafe } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "GSA" = "GSA";
-export const sentenceName = "Active satellites and dilution of precision";
+export const sentenceId: 'GSA' = 'GSA'
+export const sentenceName = 'Active satellites and dilution of precision'
 
 
-export type ThreeDFixType = "unknown" | "none" | "2D" | "3D";
-const ThreeDFixTypes: ThreeDFixType[] = [ "unknown", "none", "2D", "3D" ];
+export type ThreeDFixType = 'unknown' | 'none' | '2D' | '3D'
+const ThreeDFixTypes: ThreeDFixType[] = [ 'unknown', 'none', '2D', '3D' ]
 
 
 export interface GSAPacket extends PacketStub<typeof sentenceId> {
-    selectionMode: "automatic" | "manual";
-    fixMode: ThreeDFixType;
-    satellites: number[];
-    PDOP: number;
-    HDOP: number;
-    VDOP: number;
+  selectionMode: 'automatic' | 'manual'
+  fixMode: ThreeDFixType
+  satellites: number[]
+  PDOP: number
+  HDOP: number
+  VDOP: number
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): GSAPacket {
-    const sats: number[] = [];
+  const sats: number[] = []
 
-    for (let i = 3; i < 15; i++) {
-        if (fields[i]) {
-            sats.push(+fields[i]);
-        }
+  for (let i = 3; i < 15; i++) {
+    if (fields[i]) {
+      sats.push(+fields[i]!)
     }
+  }
 
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        selectionMode: fields[1] === "A" ? "automatic" : "manual",
-        fixMode: ThreeDFixTypes[parseIntSafe(fields[2])],
-        satellites: sats,
-        PDOP: parseFloatSafe(fields[15]),
-        HDOP: parseFloatSafe(fields[16]),
-        VDOP: parseFloatSafe(fields[17])
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    selectionMode: fields[1] === 'A' ? 'automatic' : 'manual',
+    fixMode: ThreeDFixTypes[parseIntSafe(fields[2])]!,
+    satellites: sats,
+    PDOP: parseFloatSafe(fields[15]),
+    HDOP: parseFloatSafe(fields[16]),
+    VDOP: parseFloatSafe(fields[17])
+  }
 }

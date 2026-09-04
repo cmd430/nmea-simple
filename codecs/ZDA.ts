@@ -2,7 +2,7 @@
  * === ZDA - Time & Date - UTC, day, month, year and local time zone ===
  *
  * ------------------------------------------------------------------------------
- *	      1         2  3  4    5  6  7
+ *        1         2  3  4    5  6  7
  *        |         |  |  |    |  |  |
  * $--ZDA,hhmmss.ss,dd,mm,yyyy,zz,zz*hh<CR><LF>
  * ------------------------------------------------------------------------------
@@ -17,24 +17,24 @@
  * 7. Checksum
  */
 
-import { parseIntSafe, parseTime } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseIntSafe, parseTime } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "ZDA" = "ZDA";
-export const sentenceName = "UTC, day, month, year, and local time zone";
+export const sentenceId: 'ZDA' = 'ZDA'
+export const sentenceName = 'UTC, day, month, year, and local time zone'
 
 export interface ZDAPacket extends PacketStub<typeof sentenceId> {
-    datetime: Date;
-    localZoneHours: number;
-    localZoneMinutes: number;
+  datetime: Date
+  localZoneHours: number
+  localZoneMinutes: number
 }
 
 export function decodeSentence(stub: PacketStub, fields: string[]): ZDAPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        datetime: parseTime(fields[1], fields.slice(2, 5).join("")),
-        localZoneHours: parseIntSafe(fields[5]),
-        localZoneMinutes: parseIntSafe(fields[6])
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    datetime: parseTime(fields[1]!, fields.slice(2, 5).join('')),
+    localZoneHours: parseIntSafe(fields[5]),
+    localZoneMinutes: parseIntSafe(fields[6])
+  }
 }

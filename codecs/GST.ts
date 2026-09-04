@@ -10,7 +10,7 @@
  * Field Number:
  * 1. UTC time of associated GGA fix
  * 2. RMS value of the standard deviation of the range inputs to the navigation
- *    process (range inputs include pseudoranges and DGPS corrections)
+ *  process (range inputs include pseudoranges and DGPS corrections)
  * 3. Standard deviation of semi-major axis of error ellipse, meters
  * 4. Standard deviation of semi-minor axis of error ellipse, meters
  * 5. Orientation of semi-major axis of error ellipse, degrees from true north
@@ -20,36 +20,36 @@
  * 9. Checksum
  */
 
-import { parseFloatSafe, parseTime } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe, parseTime } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "GST" = "GST";
-export const sentenceName = "GPS pseudorange noise statistics";
+export const sentenceId: 'GST' = 'GST'
+export const sentenceName = 'GPS pseudorange noise statistics'
 
 
 export interface GSTPacket extends PacketStub<typeof sentenceId> {
-    time: Date;
-    totalRms: number;
-    semiMajorError: number;
-    semiMinorError: number;
-    orientationOfSemiMajorError: number;
-    latitudeError: number;
-    longitudeError: number;
-    altitudeError: number;
+  time: Date
+  totalRms: number
+  semiMajorError: number
+  semiMinorError: number
+  orientationOfSemiMajorError: number
+  latitudeError: number
+  longitudeError: number
+  altitudeError: number
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): GSTPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        time: parseTime(fields[1]),
-        totalRms: parseFloatSafe(fields[2]),
-        semiMajorError: parseFloatSafe(fields[3]),
-        semiMinorError: parseFloatSafe(fields[4]),
-        orientationOfSemiMajorError: parseFloatSafe(fields[5]),
-        latitudeError: parseFloatSafe(fields[6]),
-        longitudeError: parseFloatSafe(fields[7]),
-        altitudeError: parseFloatSafe(fields[8])
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    time: parseTime(fields[1]!),
+    totalRms: parseFloatSafe(fields[2]),
+    semiMajorError: parseFloatSafe(fields[3]),
+    semiMinorError: parseFloatSafe(fields[4]),
+    orientationOfSemiMajorError: parseFloatSafe(fields[5]),
+    latitudeError: parseFloatSafe(fields[6]),
+    longitudeError: parseFloatSafe(fields[7]),
+    altitudeError: parseFloatSafe(fields[8])
+  }
 }

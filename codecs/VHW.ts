@@ -19,28 +19,28 @@
  * 9. Checksum
  */
 
-import { parseFloatSafe } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "VHW" = "VHW";
-export const sentenceName = "Water speed and heading";
+export const sentenceId: 'VHW' = 'VHW'
+export const sentenceName = 'Water speed and heading'
 
 
 export interface VHWPacket extends PacketStub<typeof sentenceId> {
-    degreesTrue: number;
-    degreesMagnetic: number;
-    speedKnots: number;
-    speedKmph: number;
+  degreesTrue: number
+  degreesMagnetic: number
+  speedKnots: number
+  speedKmph: number
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): VHWPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        degreesTrue: parseFloatSafe(fields[1]),
-        degreesMagnetic: parseFloatSafe(fields[3]),
-        speedKnots: parseFloatSafe(fields[5]),
-        speedKmph: parseFloatSafe(fields[7])
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    degreesTrue: parseFloatSafe(fields[1]),
+    degreesMagnetic: parseFloatSafe(fields[3]),
+    speedKnots: parseFloatSafe(fields[5]),
+    speedKmph: parseFloatSafe(fields[7])
+  }
 }

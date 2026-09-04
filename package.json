@@ -1,49 +1,25 @@
 {
   "name": "nmea-simple",
-  "version": "3.3.0",
-  "homepage": "https://github.com/101100/nmea-simple",
-  "description": "NMEA 0183 sentence parser and encoder",
-  "author": {
-    "name": "Jason Heard",
-    "email": "jasonpheard@gmail.com"
-  },
+  "version": "4.0.0",
+  "homepage": "https://github.com/cmd430/nmea-simple",
+  "description": "NMEA 0183 sentence parser",
+  "author": "cmd430",
   "license": "MIT",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "main": "index.ts",
   "keywords": [
-    "nmea",
-    "0183",
-    "nmea-0183",
-    "gps",
-    "parser",
-    "typescript"
+  "nmea",
+  "0183",
+  "nmea-0183",
+  "gps",
+  "parser",
+  "typescript"
   ],
   "repository": {
-    "type": "git",
-    "url": "https://github.com/101100/nmea-simple"
-  },
-  "bugs": {
-    "url": "https://github.com/101100/nmea-simple/issues"
-  },
-  "scripts": {
-    "build": "npm run lint && tsc",
-    "lint": "tslint *.ts codecs/*.ts examples/*.ts tests/*.ts",
-    "lint-fix": "npm run lint -- --fix",
-    "prepublish": "npm run test",
-    "test": "npm run build && mocha -R tap dist/tests"
-  },
-  "engines": {
-    "node": ">= 8.0.0"
+  "type": "git",
+  "url": "https://github.com/cmd430/nmea-simple"
   },
   "devDependencies": {
-    "@serialport/parser-readline": "^12.0.0",
-    "@types/mocha": "^10.0.7",
-    "@types/serialport": "^8.0.5",
-    "mocha": "^10.7.0",
-    "serialport": "^12.0.0",
-    "should": "^13.2.3",
-    "tslint": "^6.1.1",
-    "typescript": "^5.5.3"
+  "typescript": "^7"
   },
   "dependencies": {}
 }

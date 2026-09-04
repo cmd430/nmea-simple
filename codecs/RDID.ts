@@ -14,26 +14,26 @@
  * 4. Checksum
  */
 
-import { parseFloatSafe } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "RDID" = "RDID";
-export const sentenceName = "RDI proprietary heading, pitch, and roll";
+export const sentenceId: 'RDID' = 'RDID'
+export const sentenceName = 'RDI proprietary heading, pitch, and roll'
 
 
 export interface RDIDPacket extends PacketStub<typeof sentenceId> {
-    roll: number;
-    pitch: number;
-    heading: number;
+  roll: number
+  pitch: number
+  heading: number
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): RDIDPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        roll: parseFloatSafe(fields[1]),
-        pitch: parseFloatSafe(fields[2]),
-        heading: parseFloatSafe(fields[3])
-    };
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    roll: parseFloatSafe(fields[1]),
+    pitch: parseFloatSafe(fields[2]),
+    heading: parseFloatSafe(fields[3])
+  }
 }

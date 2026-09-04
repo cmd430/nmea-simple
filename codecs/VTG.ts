@@ -21,55 +21,30 @@
  * 10. Checksum
  */
 
-import { createNmeaChecksumFooter, encodeDegrees, encodeFixed, parseFloatSafe } from "../helpers";
-import { initStubFields, PacketStub } from "./PacketStub";
+import { parseFloatSafe } from '../helpers'
+import { initStubFields, type PacketStub } from './PacketStub'
 
 
-export const sentenceId: "VTG" = "VTG";
-export const sentenceName = "Track made good and ground speed";
+export const sentenceId: 'VTG' = 'VTG'
+export const sentenceName = 'Track made good and ground speed'
 
 
 export interface VTGPacket extends PacketStub<typeof sentenceId> {
-    trackTrue: number;
-    trackMagnetic: number;
-    speedKnots: number;
-    speedKmph?: number;
-    faaMode?: string;
+  trackTrue: number
+  trackMagnetic: number
+  speedKnots: number
+  speedKmph?: number
+  faaMode?: string
 }
 
 
 export function decodeSentence(stub: PacketStub, fields: string[]): VTGPacket {
-    return {
-        ...initStubFields(stub, sentenceId, sentenceName),
-        trackTrue: parseFloatSafe(fields[1]),
-        trackMagnetic: parseFloatSafe(fields[3]),
-        speedKnots: parseFloatSafe(fields[5]),
-        speedKmph: parseFloatSafe(fields[7]),
-        faaMode: fields[9]
-    };
-}
-
-
-export function encodePacket(packet: VTGPacket, talker: string): string {
-    const result = ["$" + talker + sentenceId];
-
-    result.push(encodeDegrees(packet.trackTrue));
-    result.push("T");
-    result.push(encodeDegrees(packet.trackMagnetic));
-    result.push("M");
-    result.push(encodeFixed(packet.speedKnots, 2));
-    result.push("N");
-    if (packet.speedKmph) {
-        result.push(encodeFixed(packet.speedKmph, 2));
-        result.push("K");
-    } else {
-        result.push("");
-        result.push("");
-    }
-    if (packet.faaMode) {
-        result.push(packet.faaMode);
-    }
-
-    const resultWithoutChecksum = result.join(",");
-    return resultWithoutChecksum + createNmeaChecksumFooter(resultWithoutChecksum);
+  return {
+    ...initStubFields(stub, sentenceId, sentenceName),
+    trackTrue: parseFloatSafe(fields[1]),
+    trackMagnetic: parseFloatSafe(fields[3]),
+    speedKnots: parseFloatSafe(fields[5]),
+    speedKmph: parseFloatSafe(fields[7]),
+    faaMode: fields[9]
+  }
 }

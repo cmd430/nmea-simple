@@ -24,32 +24,32 @@ const Readline = require("@serialport/parser-readline")
 const nmea = require("nmea-simple");
 
 const port = new SerialPort(
-    "/dev/ttyUSB0",
-    {
-        baudRate: 9600
-    }
+  "/dev/ttyUSB0",
+  {
+    baudRate: 9600
+  }
 );
 
 const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
 
 parser.on("data", line => {
-    try {
-        const packet = nmea.parseNmeaSentence(line);
+  try {
+    const packet = nmea.parseNmeaSentence(line);
 
-        if (packet.sentenceId === "RMC" && packet.status === "valid") {
-            console.log("Got location via RMC packet:", packet.latitude, packet.longitude);
-        }
-
-        if (packet.sentenceId === "GGA" && packet.fixType !== "none") {
-            console.log("Got location via GGA packet:", packet.latitude, packet.longitude);
-        }
-
-        if (packet.sentenceId === "GSA") {
-            console.log("There are " + packet.satellites.length + " satellites in view.");
-        }
-    } catch (error) {
-        console.error("Got bad packet:", line, error);
+    if (packet.sentenceId === "RMC" && packet.status === "valid") {
+      console.log("Got location via RMC packet:", packet.latitude, packet.longitude);
     }
+
+    if (packet.sentenceId === "GGA" && packet.fixType !== "none") {
+      console.log("Got location via GGA packet:", packet.latitude, packet.longitude);
+    }
+
+    if (packet.sentenceId === "GSA") {
+      console.log("There are " + packet.satellites.length + " satellites in view.");
+    }
+  } catch (error) {
+    console.error("Got bad packet:", line, error);
+  }
 });
 ```
 
@@ -114,22 +114,22 @@ Custom (proprietary) sentences can be defined with type assurance and added to t
 const logSentenceId: "LOG" = "LOG";
 
 export interface LogPacket extends PacketStub<typeof logSentenceId> {
-    logNum: number;
-    logMsg: string;
+  logNum: number;
+  logMsg: string;
 }
 
 class CustomPacketFactory extends DefaultPacketFactory<LogPacket> {
-    assembleCustomPacket(stub: PacketStub, fields: string[]): LogPacket | null {
-        if (stub.sentenceId === logSentenceId) {
-            return {
-                ...initStubFields(logSentenceId, stub),
-                logNum: parseInt(fields[1], 10),
-                logMsg: fields[2]
-            };
-        }
-
-        return null;
+  assembleCustomPacket(stub: PacketStub, fields: string[]): LogPacket | null {
+    if (stub.sentenceId === logSentenceId) {
+      return {
+        ...initStubFields(logSentenceId, stub),
+        logNum: parseInt(fields[1], 10),
+        logMsg: fields[2]
+      };
     }
+
+    return null;
+  }
 }
 
 export const CUSTOM_PACKET_FACTORY = new CustomPacketFactory();
@@ -138,14 +138,14 @@ export const CUSTOM_PACKET_FACTORY = new CustomPacketFactory();
 This extends the first example the following way:
 
 ```js
-    try {
-        const packet = nmea.parseGenericPacket(line, CUSTOM_PACKET_FACTORY);
+  try {
+    const packet = nmea.parseGenericPacket(line, CUSTOM_PACKET_FACTORY);
 
-        if (packet.sentenceId === "LOG") {
-            console.log("Got a log message:", packet.logMsg);
-        }
+    if (packet.sentenceId === "LOG") {
+      console.log("Got a log message:", packet.logMsg);
+    }
 
-    ...
+  ...
 ```
 
 Make sure not to conflict with built in sentence types!
@@ -159,19 +159,19 @@ It might be desired to investigate packets that are not recognized or have bad c
 This function will parse every packet, even if the ID is unrecognized. `sentenceId` for these packets are always `?`.
 
 ```js
-    try {
-        const packet = nmea.parseUnsafeNmeaSentence(line);
+  try {
+    const packet = nmea.parseUnsafeNmeaSentence(line);
 
-        if (packet.chxOk !== true) {
-            console.log("Skipping packet with bad checksum:");
-            return;
-        }
+    if (packet.chxOk !== true) {
+      console.log("Skipping packet with bad checksum:");
+      return;
+    }
 
-        if (packet.sentenceId === "?") {
-            console.log("Got an unknown packet with signature:", packet.fields[0]);
-        }
+    if (packet.sentenceId === "?") {
+      console.log("Got an unknown packet with signature:", packet.fields[0]);
+    }
 
-    ...
+  ...
 ```
 
 ## Acknowledgements
