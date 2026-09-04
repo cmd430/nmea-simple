@@ -1,6 +1,7 @@
 import { decodeSentence as decodeAPB, type APBPacket } from './codecs/APB'
 import { decodeSentence as decodeBWC, type BWCPacket } from './codecs/BWC'
 import { decodeSentence as decodeDBT, type DBTPacket } from './codecs/DBT'
+import { decodeSentence as decodeDPT, type DPTPacket } from './codecs/DPT'
 import { decodeSentence as decodeDTM, type DTMPacket } from './codecs/DTM'
 import { decodeSentence as decodeGGA, type GGAPacket } from './codecs/GGA'
 import { decodeSentence as decodeGLL, type GLLPacket } from './codecs/GLL'
@@ -24,8 +25,8 @@ import { decodeSentence as decodeUnknown, type UnknownPacket } from './codecs/Un
 import { validNmeaChecksum } from './helpers'
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket | ZDAPacket
-export type { APBPacket, BWCPacket, DBTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket }
+export type Packet = APBPacket | BWCPacket | DBTPacket | DPTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket | ZDAPacket
+export type { APBPacket, BWCPacket, DBTPacket, DPTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket }
 
 export function assertPacketIs<IdType extends string, PacketType extends PacketStub = Packet>(packetId: IdType, packet: PacketType): asserts packet is (PacketType & { sentenceId: IdType }) {
   if (packet.sentenceId !== packetId) {
@@ -40,6 +41,7 @@ const decoders: { [sentenceId: string]: Decoder } = {
   APB: decodeAPB,
   BWC: decodeBWC,
   DBT: decodeDBT,
+  DPT: decodeDPT,
   DTM: decodeDTM,
   GGA: decodeGGA,
   GLL: decodeGLL,
