@@ -17,6 +17,8 @@ import { decodeSentence as decodeMTW, type MTWPacket } from './codecs/MTW'
 import { decodeSentence as decodeMWV, type MWVPacket } from './codecs/MWV'
 import { decodeSentence as decodeRDID, type RDIDPacket } from './codecs/RDID'
 import { decodeSentence as decodeRMC, type RMCPacket } from './codecs/RMC'
+import { decodeSentence as decodeVDM, type VDMPacket } from './codecs/VDM'
+import { decodeSentence as decodeVDO, type VDOPacket } from './codecs/VDO'
 import { decodeSentence as decodeVHW, type VHWPacket } from './codecs/VHW'
 import { decodeSentence as decodeVTG, type VTGPacket } from './codecs/VTG'
 import { decodeSentence as decodeZDA, type ZDAPacket } from './codecs/ZDA'
@@ -26,8 +28,8 @@ import { decodeSentence as decodeUnknown, type UnknownPacket } from './codecs/Un
 import { validNmeaChecksum } from './helpers'
 
 
-export type Packet = APBPacket | BWCPacket | DBTPacket | DPTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MTWPacket | MWVPacket | RDIDPacket | RMCPacket | VHWPacket | VTGPacket | ZDAPacket
-export type { APBPacket, BWCPacket, DBTPacket, DPTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MTWPacket, MWVPacket, RDIDPacket, RMCPacket, VHWPacket, VTGPacket, ZDAPacket }
+export type Packet = APBPacket | BWCPacket | DBTPacket | DPTPacket | DTMPacket | GGAPacket | GLLPacket | GNSPacket | GSAPacket | GSTPacket | GSVPacket | HDGPacket | HDMPacket | HDTPacket | MTKPacket | MTWPacket | MWVPacket | RDIDPacket | RMCPacket | VDMPacket | VDOPacket | VHWPacket | VTGPacket | ZDAPacket
+export type { APBPacket, BWCPacket, DBTPacket, DPTPacket, DTMPacket, GGAPacket, GLLPacket, GNSPacket, GSAPacket, GSTPacket, GSVPacket, HDGPacket, HDMPacket, HDTPacket, MTKPacket, MTWPacket, MWVPacket, RDIDPacket, RMCPacket, VDMPacket, VDOPacket, VHWPacket, VTGPacket, ZDAPacket }
 
 export function assertPacketIs<IdType extends string, PacketType extends PacketStub = Packet>(packetId: IdType, packet: PacketType): asserts packet is (PacketType & { sentenceId: IdType }) {
   if (packet.sentenceId !== packetId) {
@@ -58,6 +60,8 @@ const decoders: { [sentenceId: string]: Decoder } = {
   MWV: decodeMWV,
   RDID: decodeRDID,
   RMC: decodeRMC,
+  VDM: decodeVDM,
+  VDO: decodeVDO,
   VHW: decodeVHW,
   VTG: decodeVTG,
   ZDA: decodeZDA
